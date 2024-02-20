@@ -20,6 +20,8 @@ let getAboutPage = (req, res) => {
     return res.render('aboutPage.ejs');
 }
 
+// Create CRUD 
+
 let getCRUD = (req, res) => {
     return res.render('crud.ejs');
 }
@@ -30,6 +32,15 @@ let postCRUD = async (req, res) => {
     return res.send('okokok from server');
 }
 
+// Read CRUD
+let displayGetCRUD = async (req, res) => {
+    let data = await CRUDService.getAllUser();
+    console.log(data);
+    return res.render('showAllUsers.ejs', {
+        dataTable: data,
+    });
+}
+
 
 
 module.exports = {
@@ -37,5 +48,6 @@ module.exports = {
     getAboutPage: getAboutPage,
     getCRUD: getCRUD,
     postCRUD: postCRUD,
+    displayGetCRUD: displayGetCRUD,
 
 }
