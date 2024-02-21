@@ -17,7 +17,7 @@ let handleLogin = (email, password) => {
                     // comparepassword
                     let checkPassword = await bcrypt.compareSync(password, user.password);
                     if (checkPassword) {
-                        userData.errCode = 5;
+                        userData.errCode = 0;
                         userData.errMessage = 'ok fen';
                         delete user.password;
                         userData.user = user;
@@ -36,7 +36,7 @@ let handleLogin = (email, password) => {
             else {
                 // return error
                 userData.errCode = 1;
-                userData.errMessage = `Your's email orther`;
+                userData.errMessage = `Your's email isn't exist in your system. Try other email `;
             }
             resolve(userData);
         } catch (e) {
@@ -64,6 +64,33 @@ let checkEmail = (userEmail) => {
     })
 }
 
+let getAllUsers = (userId) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let users = '';
+            if (userId === 'ALL') {
+                users = await db.User.findAll({
+                    attributes: {
+                        exclude: ['password'] //ko lay password
+                    }
+                })
+            }
+            if (userId && userId !== 'ALL') {
+                users = await db.User.findOne({
+                    where: { id: userId },
+                    attributes: {
+                        exclude: ['password'] //ko lay password
+                    }
+                })
+            }
+            resolve(users);
+        } catch (e) {
+            reject(e);
+        }
+    })
+}
+
 module.exports = {
     handleLogin: handleLogin,
+    getAllUsers: getAllUsers,
 }
