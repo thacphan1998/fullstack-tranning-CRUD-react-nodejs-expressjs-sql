@@ -45,6 +45,10 @@
                 <td>
                     <%= dataTable[i].gender %>
                 </td>
+                <td>
+                    <a href="/edit-crud?id=<%= dataTable[i].id %>" type="button">edit</a>
+                    <a href="" type="button">delete</a>
+                </td>
             </tr>
             <% } %>
     </table>

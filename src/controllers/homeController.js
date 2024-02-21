@@ -41,6 +41,29 @@ let displayGetCRUD = async (req, res) => {
     });
 }
 
+let editCRUD = async (req, res) => {
+    let userId = req.query.id;
+    if (userId) {
+        let userData = await CRUDService.editUserById(userId);
+        console.log(userData)
+        return res.render('editCRUD.ejs', {
+            user: userData,
+        });
+    }
+    else {
+        return res.send('blabla')
+    }
+
+}
+
+let putCRUD = async (req, res) => {
+    let data = req.body;
+    let allUsers = await CRUDService.updateUser(data);
+    return res.render('showAllUsers.ejs', {
+        dataTable: allUsers,
+    });
+}
+
 
 
 module.exports = {
@@ -49,5 +72,7 @@ module.exports = {
     getCRUD: getCRUD,
     postCRUD: postCRUD,
     displayGetCRUD: displayGetCRUD,
+    editCRUD: editCRUD,
+    putCRUD: putCRUD,
 
 }
