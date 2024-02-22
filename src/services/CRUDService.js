@@ -10,8 +10,8 @@ let createNewUser = async (data) => {
             await db.User.create({
                 email: data.email,
                 password: hashPasswordFromBcrypt,
-                firstName: data.firstname,
-                lastName: data.lastname,
+                firstName: data.firstName,
+                lastName: data.lastName,
                 address: data.address,
                 phonenumber: data.phonenumber,
                 gender: data.gender === '1' ? true : false,
@@ -28,7 +28,7 @@ let createNewUser = async (data) => {
 let hashUserPassword = (password) => {
     return new Promise(async (resolve, reject) => {
         try {
-            var hashPassword = await bcrypt.hashSync(password, salt);
+            let hashPassword = await bcrypt.hashSync(password, salt);
             resolve(hashPassword);
         } catch (e) {
             reject(e);
