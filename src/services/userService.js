@@ -178,9 +178,6 @@ let deleteUser = (userId) => {
     return new Promise(async (resolve, reject) => {
         try {
 
-            // let userIdDelete = await db.User.findOne({
-            //     where: { id: userId },
-            // })
             let userIdDelete = await db.User;
             if (!userIdDelete) {
                 resolve({
@@ -190,7 +187,7 @@ let deleteUser = (userId) => {
             }
 
             await userIdDelete.destroy({
-                where: { id: userIdDelete },
+                where: { id: userId },
             });
             resolve({
                 errCode: 0,
