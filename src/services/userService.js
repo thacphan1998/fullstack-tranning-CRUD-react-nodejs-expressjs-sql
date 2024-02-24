@@ -22,7 +22,7 @@ let handleLogin = (email, password) => {
             let isExits = await checkEmail(email);
             if (isExits) {
                 let user = await db.User.findOne({
-                    attributes: ['email', 'password', 'roleId'],
+                    attributes: ['email', 'password', 'roleId', 'firstName', 'lastName'],
                     where: { email: email },
                     raw: true,
 
@@ -122,8 +122,9 @@ let createNewUserApi = (data) => {
                     lastName: data.lastName,
                     address: data.address,
                     phonenumber: data.phonenumber,
-                    gender: data.gender === '1' ? true : false,
+                    gender: data.gender,
                     roleId: data.roleId,
+                    positionId: data.positionId
                 })
 
                 resolve({
@@ -199,10 +200,36 @@ let deleteUser = (userId) => {
     })
 }
 
+let getAllCodeService = (typeInput) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            if (!typeInput) {
+                resolve({
+                    errCode: 1,
+                    message: 'Missing required parameter'
+                })
+            } else {
+                let res = {};
+                let allCode = await db.Allcode.findAll({
+                    where: { type: typeInput },
+                });
+                res.errCode = 0;
+                res.data = allCode;
+                resolve(res);
+
+            }
+
+        } catch (e) {
+            reject(e);
+        }
+    })
+}
+
 module.exports = {
     handleLogin: handleLogin,
     getAllUsers: getAllUsers,
     createNewUserApi: createNewUserApi,
     editUser: editUser,
     deleteUser: deleteUser,
+    getAllCodeService: getAllCodeService,
 }
