@@ -7,13 +7,10 @@ let router = express.Router();
 
 let initWebRoutes = (app) => {
     router.get('/', homeController.getHomePage);
-
     router.get('/about-us', homeController.getAboutPage);
-
     router.get('/crud', homeController.getCRUD);
 
     router.post('/post-crud', homeController.postCRUD);
-
     // get CRUD (read)
     router.get('/get-crud', homeController.displayGetCRUD);
     // edit CRUD
@@ -28,14 +25,14 @@ let initWebRoutes = (app) => {
     router.post('/api/create-new-user', userController.handleCreateNewUser);
     router.put('/api/edit-user', userController.handleEditUser);
     router.delete('/api/delete-user', userController.handleDeleteUser);
-
     router.get('/api/allcode', userController.getAllCode);
 
     router.get('/api/top-doctor-home', doctorController.getTopDoctorHome);
-
     router.get('/api/get-all-doctors', doctorController.getAllDoctors);
     router.post('/api/save-infor-doctors', doctorController.postInforDoctor);
-
+    router.get('/api/get-detail-doctors-by-id', doctorController.getDetailDoctorById);
+    router.post('/api/bulk-create-schedule', doctorController.bulkCreateSchedule);
+    router.get('/api/get-schedule-doctors-by-date', doctorController.getScheduleByDate);
 
     return app.use("/", router);
 }
