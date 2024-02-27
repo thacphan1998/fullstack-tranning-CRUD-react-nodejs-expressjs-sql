@@ -9,6 +9,7 @@ let postBookAppointment = (data) => {
                     errCode: 1,
                     message: 'Missing parameter'
                 })
+
             } else {
                 //update patient
                 let user = await db.User.findOrCreate({
