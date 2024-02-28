@@ -90,6 +90,7 @@ let getDetailSpecialtyById = (inputId, location) => {
                     }
 
                     data.doctorSpecialty = doctorSpecialty
+
                 } else {
                     data = {}
                 }
