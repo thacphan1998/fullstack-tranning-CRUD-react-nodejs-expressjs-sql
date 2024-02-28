@@ -147,7 +147,6 @@ let saveDetailInforDoctor = (inputData) => {
                     })
                 }
 
-
                 resolve({
                     errCode: 0,
                     message: 'Save infor succeed!'
