@@ -1,17 +1,19 @@
+import { reject } from 'lodash';
 import db from '../models/index';
-require('dotenv').config();
 
-let createSpecialty = (data) => {
+
+let createClinic = (data) => {
     return new Promise(async (resolve, reject) => {
         try {
-            if (!data.name || !data.imageBase64 || !data.descriptionHTML || !data.descriptionMarkdown) {
+            if (!data.name || !data.address || !data.imageBase64 || !data.descriptionHTML || !data.descriptionMarkdown) {
                 resolve({
                     errCode: 1,
                     message: 'Missing parameter'
                 })
             } else {
-                await db.Specialty.create({
+                await db.Clinic.create({
                     name: data.name,
+                    address: data.address,
                     image: data.imageBase64,
                     descriptionHTML: data.descriptionHTML,
                     descriptionMarkdown: data.descriptionMarkdown
@@ -29,10 +31,10 @@ let createSpecialty = (data) => {
     })
 }
 
-let getAllSpecialty = () => {
+let getAllClinic = () => {
     return new Promise(async (resolve, reject) => {
         try {
-            let data = await db.Specialty.findAll({
+            let data = await db.Clinic.findAll({
 
             });
             if (data && data.length > 0) {
@@ -46,49 +48,37 @@ let getAllSpecialty = () => {
                 message: 'Ok',
                 data
             })
+
         } catch (e) {
             reject(e)
         }
-
     })
 }
 
-let getDetailSpecialtyById = (inputId, location) => {
+let getDetailClinicById = (inputId) => {
     return new Promise(async (resolve, reject) => {
         try {
-            if (!inputId || !location) {
+            if (!inputId) {
                 resolve({
                     errCode: 1,
                     message: 'Missing parameter'
                 })
             } else {
-                let data = await db.Specialty.findOne({
+                let data = await db.Clinic.findOne({
                     where: {
                         id: inputId
                     },
-                    attributes: ['descriptionHTML', 'descriptionMarkdown'], //những thuộc tính data cần lấy
+                    attributes: ['name', 'address', 'descriptionHTML', 'descriptionMarkdown'], //những thuộc tính data cần lấy
                 })
 
 
                 if (data) {
-                    let doctorSpecialty = [];
-                    if (location === 'ALL') {
-                        doctorSpecialty = await db.Doctor_infor.findAll({
-                            where: { specialtyId: inputId },
-                            attributes: ['doctorId', 'provinceId'], //những thuộc tính data cần lấy
-                        })
-                    } else {
-                        //find by location
-                        doctorSpecialty = await db.Doctor_infor.findAll({
-                            where: {
-                                specialtyId: inputId,
-                                provinceId: location
-                            },
-                            attributes: ['doctorId', 'provinceId'], //những thuộc tính data cần lấy
-                        })
-                    }
-
-                    data.doctorSpecialty = doctorSpecialty
+                    let doctorClinic = [];
+                    doctorClinic = await db.Doctor_infor.findAll({
+                        where: { ClinicId: inputId },
+                        attributes: ['doctorId', 'provinceId'], //những thuộc tính data cần lấy
+                    })
+                    data.doctorClinic = doctorClinic
 
                 } else {
                     data = {}
@@ -99,19 +89,16 @@ let getDetailSpecialtyById = (inputId, location) => {
                     message: 'Ok',
                     data
                 })
-
-
-
             }
 
         } catch (e) {
-            reject(e);
+            reject(e)
         }
     })
 }
 
 module.exports = {
-    createSpecialty: createSpecialty,
-    getAllSpecialty: getAllSpecialty,
-    getDetailSpecialtyById: getDetailSpecialtyById
+    createClinic: createClinic,
+    getAllClinic: getAllClinic,
+    getDetailClinicById: getDetailClinicById
 }
