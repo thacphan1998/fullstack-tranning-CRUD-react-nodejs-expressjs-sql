@@ -39,7 +39,7 @@ let getAllClinic = () => {
             });
             if (data && data.length > 0) {
                 data.map(item => {
-                    item.image = new Buffer(item.image, 'base64').toString('binary');
+                    item.image = Buffer.from(item.image, 'base64').toString('binary');
                     return item
                 })
             }
@@ -74,7 +74,7 @@ let getDetailClinicById = (inputId) => {
 
                 if (data) {
                     let doctorClinic = [];
-                    doctorClinic = await db.Doctor_infor.findAll({
+                    doctorClinic = await db.Doctor_Infor.findAll({
                         where: { ClinicId: inputId },
                         attributes: ['doctorId', 'provinceId'], //những thuộc tính data cần lấy
                     })

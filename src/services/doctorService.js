@@ -112,7 +112,7 @@ let saveDetailInforDoctor = (inputData) => {
                     }
                 }
 
-                let doctorInfor = await db.Doctor_infor.findOne({
+                let doctorInfor = await db.Doctor_Infor.findOne({
                     where: {
                         doctorId: inputData.doctorId
                     },
@@ -134,7 +134,7 @@ let saveDetailInforDoctor = (inputData) => {
                     await doctorInfor.save();
                 } else {
                     //create
-                    await db.Doctor_infor.create({
+                    await db.Doctor_Infor.create({
                         doctorId: inputData.doctorId,
                         priceId: inputData.selectedPrice,
                         provinceId: inputData.selectedProvince,
@@ -185,7 +185,7 @@ let getDetailDoctorById = (inputId) => {
                         { model: db.Allcode, as: 'positionData', attributes: ['valueEn', 'valueVi'] },
 
                         {
-                            model: db.Doctor_infor,
+                            model: db.Doctor_Infor,
                             attributes: {
                                 exclude: ['id', 'doctorId']
                             },
@@ -233,7 +233,7 @@ let bulkCreateSchedule = (data) => {
                 }
 
                 let existing = await db.Schedule.findAll({
-                    where: { doctorId: data.doctorId, date: data.formatedDate },
+                    where: { doctorId: data.doctorId, date: '' + data.formatedDate },
                     attributes: ['timeType', 'date', 'doctorId', 'maxNumber'],
                     raw: true
                 });
@@ -313,7 +313,7 @@ let getExtraInforDoctorById = (idInput) => {
                     message: 'Missing required parameter'
                 })
             } else {
-                let data = await db.Doctor_infor.findOne({
+                let data = await db.Doctor_Infor.findOne({
                     where: {
                         doctorId: idInput
                     },
@@ -367,7 +367,7 @@ let getProfileInforDoctorById = (inputId) => {
                         { model: db.Allcode, as: 'positionData', attributes: ['valueEn', 'valueVi'] },
 
                         {
-                            model: db.Doctor_infor,
+                            model: db.Doctor_Infor,
                             attributes: {
                                 exclude: ['id', 'doctorId']
                             },
@@ -382,7 +382,7 @@ let getProfileInforDoctorById = (inputId) => {
                     nest: true
                 })
                 if (data && data.image) {
-                    data.image = new Buffer(data.image, 'base64').toString('binary');
+                    data.image = Buffer.from(data.image, 'base64').toString('binary');
                 }
                 if (!data) data = {};
                 resolve({

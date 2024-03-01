@@ -37,7 +37,7 @@ let getAllSpecialty = () => {
             });
             if (data && data.length > 0) {
                 data.map(item => {
-                    item.image = new Buffer(item.image, 'base64').toString('binary');
+                    item.image = Buffer.from(item.image, 'base64').toString('binary');
                     return item
                 })
             }
@@ -73,13 +73,13 @@ let getDetailSpecialtyById = (inputId, location) => {
                 if (data) {
                     let doctorSpecialty = [];
                     if (location === 'ALL') {
-                        doctorSpecialty = await db.Doctor_infor.findAll({
+                        doctorSpecialty = await db.Doctor_Infor.findAll({
                             where: { specialtyId: inputId },
                             attributes: ['doctorId', 'provinceId'], //những thuộc tính data cần lấy
                         })
                     } else {
                         //find by location
-                        doctorSpecialty = await db.Doctor_infor.findAll({
+                        doctorSpecialty = await db.Doctor_Infor.findAll({
                             where: {
                                 specialtyId: inputId,
                                 provinceId: location
